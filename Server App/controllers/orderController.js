@@ -3,6 +3,7 @@ const Product = require("../models/product");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
+// Create new order
 exports.placeOrder = async (req, res) => {
   const token = req.cookies.token;
   const { email, name, phone, address, products } = req.body;
@@ -91,6 +92,52 @@ exports.placeOrder = async (req, res) => {
     return res
       .status(201)
       .json({ message: "Order placed successfully!", status: 201 });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", status: 500 });
+  }
+};
+
+// View orders history
+exports.getOrderHistory = async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: No token provided", status: 401 });
+  }
+
+  try {
+    // Verify and decode the JWT token
+    const decoded = jwt.verify(token, "your_jwt_secret_key"); // use env var in production
+
+    const { email, password } = decoded;
+
+    if (!email || !password) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: Invalid token", status: 401 });
+    }
+
+    // Find all orders by matching email and password
+    const orders = await Order.find({ email });
+
+    if (!orders.length) {
+      return res.status(404).json({
+        message: "No order history found for this account.",
+        status: 404,
+        orders: [],
+      });
+    }
+
+    return res.status(200).json({
+      message: "Fetched order history successfully!",
+      status: 200,
+      orders,
+    });
   } catch (err) {
     console.error(err);
     return res
