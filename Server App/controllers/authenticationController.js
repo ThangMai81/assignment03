@@ -40,7 +40,7 @@ exports.signUp = async (req, res, next) => {
     // Create JWT token
     const token = jwt.sign(
       { email: user.email, password: user.password, role: user.role },
-      "your_jwt_secret_key", // Replace with an environment variable in production
+      "your_jwt_secret_key", // Replace with an environment variable in production like this process.env.JWT_SECRET
       { expiresIn: "1h" }
     );
 
