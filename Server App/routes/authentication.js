@@ -4,5 +4,6 @@ const authenticationController = require("../controllers/authenticationControlle
 
 router.post("/sign-up", authenticationController.signUp);
 router.post("/sign-in", authenticationController.signIn);
+router.post("/get-full-name", authenticationController.getFullName);
 
 module.exports = router;

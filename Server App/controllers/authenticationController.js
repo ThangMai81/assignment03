@@ -110,3 +110,31 @@ exports.signIn = async (req, res, next) => {
     });
   }
 };
+
+// Get full user name by sending token
+exports.getFullName = async (req, res) => {
+  const token = req.cookies.token; // or req.headers.authorization
+
+  if (!token) {
+    return res.status(401).json({ message: "Token not provided", status: 401 });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "your_jwt_secret_key");
+
+    // Use email to find user
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found", status: 404 });
+    }
+
+    res.status(200).json({
+      message: "User retrieved successfully",
+      status: 200,
+      name: user.name,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "Invalid token", status: 401 });
+  }
+};

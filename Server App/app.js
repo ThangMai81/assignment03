@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -12,13 +13,14 @@ const corsOptions = {
 
 const productRoutes = require("./routes/product");
 const authenticationRoutes = require("./routes/authentication");
+const orderRoutes = require("./routes/order");
 
 const PORT = process.env.PORT || 5000;
 const HOST = "localhost";
 
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Base route
 app.get("/", (req, res) => {
@@ -28,6 +30,7 @@ app.get("/", (req, res) => {
 // Other routes
 app.use("/product", productRoutes);
 app.use("/auth", authenticationRoutes);
+app.use("/order", orderRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
