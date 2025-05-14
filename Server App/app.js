@@ -18,7 +18,14 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
-app.use("/", productRoutes);
+// Base route
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to the API" });
+});
+
+// Other routes
+app.use("/product", productRoutes);
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
