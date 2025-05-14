@@ -11,6 +11,9 @@ const corsOptions = {
   optionsSuccessStatus: 204, // cho preflight trả về 204 thay vì 200
 };
 
+const PORT = process.env.PORT || 5000;
+const HOST = "localhost";
+
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
@@ -30,6 +33,8 @@ mongoose
   )
   .then((result) => {
     console.log("Database connect successful");
-    app.listen(5000);
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://${HOST}:${PORT}`);
+    });
   })
   .catch((err) => console.log(err));
