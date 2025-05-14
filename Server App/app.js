@@ -29,7 +29,7 @@ mongoose
     `mongodb+srv://maithang18122003:Thang18122003@cluster0.6lqg4.mongodb.net/phone_shop?retryWrites=true&w=majority&appName=Cluster0`
   )
   .then((result) => {
-    console.log(result);
+    console.log("Database connect successful");
     app.listen(5000);
   })
   .catch((err) => console.log(err));
